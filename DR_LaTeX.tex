@@ -1,0 +1,830 @@
+\documentclass[12pt,a4paper,titlepage]{report}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage[onehalfspacing]{setspace}
+\usepackage[bookmarks=True]{hyperref}
+\usepackage{authblk}
+\usepackage{color}
+\usepackage[table]{xcolor}
+\usepackage{fancybox}
+\usepackage{fancyhdr}
+\usepackage[nottoc]{tocbibind}
+\usepackage[square]{natbib}
+\usepackage{rotating}
+\renewcommand{\bibname}{References}
+\usepackage{booktabs}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\author{\Large{Muhammad Zubair Khan}}
+\affil{\large{\texttt{mkzb3@mail.umkc.edu}}}
+\title{\vspace{-15mm}\huge{\textbf{Directed Reading Report}}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Deep neural networks truly have the potential to revolutionize the field of Artificial Intelligence. Main function of Deep Neural Network is to receive a set of inputs, perform progressively complex calculations by passing through set of hidden layers and then use the output to solve the problems. Deep Neural Networks are used for numerous purposes, however this report covers the basic literature in deep learning including the state-of-art research conducted in image classification and segmentation using deep learning. Also, this report  target different classification models and architectures applied over various databases using Python libraries. Moreover, deep analysis is performed with the help of key performance metrics and visualizations. \\
+
+\noindent\textbf{Keywords:} Neural network, deep learning, convolution network, model, database, architecture  
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\chapter{Introduction}
+\section{Overview}
+Deep network is state-of-art paradigm designed to allow Artificial Intelligence community to think out of the box. As it is an extension of Neural Nets,it is highly recommended to have enough knowledge of how the Neural Network operates before going deep into Deep Nets. 
+
+\subsection{Neural Network's}
+Neural Network truly have the potential to revolutionize the field of Artificial Intelligence. Main function of Neural Nets is to receive a set of inputs, perform progressively complex calculations and then use the output to solve the problems. Neural networks are used for lot of applications but main goal of this literature is to target classification. Neural Net is highly structured and comes in layers. The first layer is input layer, the final layer is the output layer and all the layers in between are referred to as hidden layers. It mainly operates on Forward Propagation and Backward Propagation.
+
+\subsection{Deep Learning}
+Neural Network for complex patterns is unusable, the only practical choice is Deep Network. Deep nets are inspired by the structure of human brain. These are able to break complex patterns down into a series of simpler patterns and contains several number of hidden layers in contrast to shallow nets. The Deep Nets reviewed, are mainly executed for classification over the labeled Databases. 
+The overview of Deep Nets operated against the Datasets in this report can be seen in table:~\ref{tab: Table-1}. Moreover, the code is written in Python3 using Jupyter notebook with Keras library over Tensorflow and accessible on  \url{https://github.com/zubairqalbi/DR_Report} .
+
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Deep Nets with Datasets}
+\label{tab: Table-1}
+\begin{tabular}{c c c c c c}
+\hline
+\textbf{DIARETDB1} & \textbf{CAT-DOG} & \textbf{CIFAR10} & \textbf{IMDB} & \textbf{MNIST} & \textbf{FASHION-MNIST} \\
+\hline
+Conv-Net & DeepFC & DeepFC & DeepFC & DeepFC & DeepConv-AE\\
+Data-Aug & Conv-Net & Conv-Net & Simple-RNN & Simple-AE & Denoising-AE\\
+TL(VGG16)& Data-Aug & $-$ & LSTM & Sparse-AE & $-$\\
+TL(VGG19)& $-$ & $-$ & $-$ & DeepFC-AE & $-$\\
+FT(VGG16) & $-$ & $-$ & $-$ & DeepConv-AE & $-$\\
+FT(VGG19) & $-$ & $-$ & $-$ & Conv-Net & $-$\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Literature review}
+Retinal images plays vital role not only in detection and diagnoses of diseases related to eyes but also helpful in complications of diabetes hypertension and cardiovascular diseases \cite{abramoff2010retinal}. There are two common modes for capturing retinal images, which are Fundus Photography and Optical Coherence Tomography. Fundus images provides $2$D view whereas, OCT gives cross-sectional view of eye \cite{hassan2015review}.
+A survey conducted on Diabetic Retinopathy(DR) in korea in $1998$ and it was reported that $44.4/1000$ people$/$year suffers from DR. Later in $2013$ this value increased to $56/1000$ people$/$year. This increase mirror the increase of diabetes globally, hence, early detection of DR using automated detection system is useful step \cite{lee2016current}. For analyzing there medical retinal images, Deep learning, specifically deep convolution networks are widely used. Main common tasks performed by deep learning are image classification, object detection, segmentation and object registration \cite{litjens2017survey}.\\
+
+\noindent \cite{tan2017segmentation} developed $7$-layer conv-net to perform segmentation on $3$-channeled fundus images. The output layer contained $4$-neurons, exhibiting four categories of segmentation. Average accuracy of $0.9268$ is achieved on testing set taken from DRIVE database. \cite{dash2017thresholding} segmented retinal vessels using mean-c local adaptive threshold technique. It shows the mean accuracy of $0.954$ and $0.955$ for CHASE-DB1 and DRIVE databases respectively.
+\cite{pratt2016convolutional} has used conv-net of $10$-convolution layers and $3$-fully connected dense layers, trained on $80,000$ images of kaggle dataset executed on NVIDIA K$40$c high-end GPU, achieved the accuracy of $0.75$ on $5000$ validation images.
+\cite{zhu2017retinal} proposed extreme learning machine based supervised method for retinal vessel segmentation using fundus images. Method is tested over DRIVE database and achieved accuracy of $0.9607$.\\
+
+\noindent \cite{tan2017automated} used fundus images taken from CLEOPATRA database and performed segmentation using $10$-layer convolution neural network on pathalogical features to discriminate microaneurysms, haemorrhages and exudates.The model achieved the sensitivity of $0.87$, $0.71$, $0.62$, and $0.46$ for exudates, dark-lesions, haemorrhages and microaneurysms respectively.
+\cite{hu2018retinal} proposed multiscale conv-net with improved loss function for retinal vessel segmentation operated on color fundus images. The model showed better results on tiny thin vessel and vascular edge localization on two public repositories. This method achieved the accuracy of $0.9533$ and $0.9632$ for DRIVE and STARE datasets.\\
+
+\noindent \cite{sinthanayothin2002automated} proposed a system to analyze color fundus images for features of non-proliferative DR. The method was applied to $30$ retinal images for exuadates recognition and achieved sensitivity of $0.885$ and specificity of $0.997$. Its application for hoemorrhages and microaneurysms operated on $14$ images achieved sensitivity of $0.775$ and specificity of $0.887$.
+\cite{prentavsic2016detection} proposed a method for exuadates recognition for early detection of DR using conv-net. Manually segmented database is used for validation. This method achieved F-$1$ measure of $0.78$.
+\cite{oliveira2018retinal} proposed novel method that segregates multiscale fully convolution network with stationary wavelet transform to deal with vessel structure in retina. The method is tested on publicly available database CHASE-DB1, STARE and DRIVE with accuracy of $0.9653$, $0.9694$ and $0.9576$ respectively.\\
+
+\noindent \cite{sinthanayothin1999automated} used $112$ images for localization and segmentation of main features in retinal fundus images. Optic discs are identified using the area with high intensities, blood vessels are found using multi-layer perceptron and foveas were identified using matching correlation. Mean sensitivity and specificity achieved are $0.876$ and $0.964$ respectively.
+Early analysis of vascular structures in retinal images plays vital role in curing sight of a person. \cite{hassan2015retinal} proposed retinal image segmentation approach to extract blood vessels. Approach used mathematical morphology and K-mean clustering. It is tested on DRIVE dataset and achieved the accuracy of $0.951$.
+
+
+\chapter{Data and Tools}
+\section{Datasets Utilized}
+\begin{itemize}
+\item\textbf{DIARETDB1}\, is multi-class Standard Diabetic Retinopathy Database freely available online for scientific research, contain $208$ color fundus images captured with digital fundus camera categorized into $4$ classes which are Normal, DR1, DR2, DR3, where DR stands for Diabetic Retinopathy.
+\item\textbf{Cat-Dog}\, is kaggle platform dataset consist of in-total  \,$25000$ $3$-channeled images, split evenly into $1250$ cat and $1250$ dog categories, placed in separate folder.     .
+\item\textbf{CIFAR10}\, is small scale public dataset, splited into $50,000$ training and $10,000$ testing color images designed for classification. Each image is of dimension $32\mathbf{x}32$.
+\item\textbf{IMDB}\, is a movie reviews sentiment classification dataset, publicly available online, consist of  $50,000$  reviews, split evenly into $25000$ train and $25000$ test sets. 
+\item\textbf{MNIST}\, is a hand written digits database consist of $60,000$ training and $10,000$ testing subsets. These are grayscale images with dimension of $28\mathbf{x}28$ and labels ranges from $0-9$.
+\item\textbf{Fashion-MNIST}\,is grayscale image dataset contain $60,000$ training and $10,000$ testing images. The dataset is categorized into $10$ fashion categories, designed with images of dimension $28\mathbf{x}28$. 	  
+\end{itemize}
+
+\section{Tools Learned and Used}
+This section covers tools which are essential and learned during the course of semester. These tools are sub-categorized based on their usage.
+
+\subsection{Document Writing}
+\LaTeX \,is one of the demanding tool majorly use for Article, Report and Book writing. It comes in combination with various add-ones. List of Packages/Tools learned that comes with \LaTeX \,are enlisted below:
+
+\begin{itemize}
+\item \LaTeX \,(Miktex with TexStudio)
+\item \LaTeX \,(Miktex with TexMaker)
+\item \LaTeX \, with Lyx 
+\item BibTeX management with Mendeley Desktop  
+\item BibTeX management with JabRef
+\item BibTeX management with Zotero
+\item Beamers 
+\end{itemize}
+
+\subsection{Code Scripting Tools}
+Two main development environments are used to write, compile, execute and visualize Computer programs along with numerous packages. These packages are installed using Pip Installer. Description of scripting tools and packages used with each environment is given below: 
+
+\begin{itemize}
+\item Jupyter Notebook with Python 3
+ \begin{itemize}
+ \item Numpy
+ \item Matplotlit
+ \item Pandas
+ \item cv2
+ \item Scikit-learn
+ \item Keras with TensorFlow
+ \end{itemize}
+\item Pycharm with Python 3 
+ \begin{itemize}
+ \item Numpy
+ \item Matplotlit
+ \item Pandas
+ \item Scikit-learn
+ \end{itemize}
+\end{itemize}
+
+\subsection{Code Management Tool}
+In order to outsource, store and manage IPythone and Pycharm scripts online on cloud, \textit{Github} repository is used, operated with \textit{Git-Bash} command prompt.
+
+\chapter{Models and Results}
+
+This chapter is segregated into six subsection. Each subsection reflects peculiar database used, and demonstrates the results attained after executing underlined deep learning strategies.
+
+\section{DiaRetDB1}
+Below are the set of Deep Network strategies applied on Fundus images taken from DiaRetDB1 public repository. 
+
+\subsection{Conv-Net on gray-scale fundus images}
+Architecture consist of $4$-convolution, $3$-maxpooling and $2$-fully connected layers, applied over gray-scale fundus images. The dataset is iterated for $30$ epochs segregated in batch size of $32$. Number of filters used are $64$ with kernel size of $3$x$3$ and pooling filters are of size $2$x$2$. It is observed by looking figure:~\ref{fig: Image1} and table:~\ref{tab: Table-2} that the model is showing positive response in terms of training and testing accuracy and by tuning hyper-parameters, better results could be achieved. Classification report of the model can be seen in table:~\ref{tab: Table-3}. \vspace{10pt}
+\vspace{10pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-2}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.8588$ & $0.6154$ & $1.1591$ & $0.4808$\\
+\hline
+\end{tabular}
+\end{table}
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Classification Report}
+\label{tab: Table-3}
+\begin{tabular}{c c c c c}
+\hline
+\textbf{} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\hline
+\textbf{Normal} & $0.31$ & $0.40$ & $0.35$ & $10$\\
+\textbf{DR1} & $0.67$ & $0.55$ & $0.60$ & $11$\\
+\textbf{DR2} & $0.50$ & $0.56$ & $0.53$ & $16$\\
+\textbf{DR3} & $0.50$ & $0.40$ & $0.44$ & $15$\\
+\textbf{Weighted avg} & $0.50$ & $0.48$ & $0.48$ & $52$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{fundus_gray_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{fundus_gray_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy on gray-scale fundus images}
+\label{fig: Image1}
+\end{figure}    
+
+\subsection{Conv-net on color fundus images}
+Architecture consist of $4$-convolution, $3$-maxpooling and $2$-fully connected layers, applied over color fundus images. The dataset is iterated for $30$ epochs segregated in batch size of $32$. Number of filters used are $64$ with kernel size of $3$x$3$ and pooling filters are of size $2$x$2$. It is observed by looking figure:~\ref{fig: Image2} and table:~\ref{tab: Table-4} that the model is showing positive response in terms of training and testing accuracy and by tuning hyper-parameters, better results could be achieved. Classification report of the model can be seen in table:~\ref{tab: Table-5}. \vspace{10pt}
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-4}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.5568$ & $0.7628$ & $1.3214$ & $0.6923$\\
+\hline
+\end{tabular}
+\end{table}
+\vspace{20pt}
+
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Classification Report}
+\label{tab: Table-5}
+\begin{tabular}{c c c c c}
+\hline
+\textbf{} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\hline
+\textbf{Normal} & $0.53$ & $0.91$ & $0.67$ & $11$\\
+\textbf{DR1} & $0.90$ & $0.69$ & $0.78$ & $13$\\
+\textbf{DR2} & $0.73$ & $0.57$ & $0.64$ & $14$\\
+\textbf{DR3} & $0.75$ & $0.64$ & $0.69$ & $14$\\
+\textbf{Weighted avg} & $0.73$ & $0.69$ & $0.70$ & $52$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{fundus_color_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{fundus_color_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy on color fundus images}
+\label{fig: Image2}
+\end{figure}
+
+\subsection{Conv-net on augmented fundus images}
+Architecture consist of $4$-convolution, $3$-maxpooling and $2$-fully connected layers, applied over color fundus images. The dataset is iterated for $30$ epochs segregated in batch size of $32$. Number of filters used are $64$ with kernel size of $3$x$3$ and pooling filters are of size $2$x$2$. It is observed by looking figure:~\ref{fig: Image3} and table:~\ref{tab: Table-6} that the model is showing positive response in terms of training and testing accuracy and by tuning hyper-parameters, better results could be achieved. Classification report of the model can be seen in table:~\ref{tab: Table-7}. \vspace{10pt}
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-6}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.9614$ & $0.5495$ & $1.0002$ & $0.4808$\\
+\hline
+\end{tabular}
+\end{table}
+\vspace{20pt}
+
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Classification Report}
+\label{tab: Table-7}
+\begin{tabular}{c c c c c}
+\hline
+\textbf{} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\hline
+\textbf{Normal} & $0.50$ & $0.73$ & $0.59$ & $11$\\
+\textbf{DR1} & $1.00$ & $0.67$ & $0.80$ & $12$\\
+\textbf{DR2} & $0.42$ & $0.42$ & $0.42$ & $19$\\
+\textbf{DR3} & $0.11$ & $0.10$ & $0.11$ & $10$\\
+\textbf{Weighted avg} & $0.51$ & $0.48$ & $0.48$ & $52$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{fundus_datagen_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{fundus_datagen_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy of augmented color fundus images}
+\label{fig: Image3}
+\end{figure}
+
+\subsection{Transfer learning using VGG16 on color fundus images}
+In this subsection classic VGG16 architecture with two fully connected customized layers placed at the top of model along with imagenet weights is used on color fundus images. Batch size of 10 for 30 epochs is considered. Moreover, as number of images are small so data augmentation is performed to increase training and validation samples in order to reduce chances of over-fitting. The result given in table:~\ref{tab: Table-8} and figure:~\ref{fig: Image4} shows that VGG16 with imagenet weights perfomed considerably well on generalized dataset of fundus images. The classification report is given in table:~\ref{tab: Table-9}.
+\vspace{30pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-8}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.2025$ & $0.9187$ & $0.6669$ & $0.7250$\\
+\hline
+\end{tabular}
+\end{table}
+\vspace{20pt}
+
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Classification Report}
+\label{tab: Table-9}
+\begin{tabular}{c c c c c}
+\hline
+\textbf{} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\hline
+\textbf{Normal} & $0.40$ & $0.29$ & $0.33$ & $7$\\
+\textbf{DR1} & $0.94$ & $ 0.74$ & $0.83$ & $23$\\
+\textbf{DR2} & $0.59$ & $1.00$ & $0.74$ & $10$\\
+\textbf{Weighted avg} & $0.76$ & $0.72$ & $0.72$ & $40$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{vgg16_tl_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{vgg16_tl_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying transfer learning using VGG16 on augmented color fundus images}
+\label{fig: Image4}
+\end{figure}
+
+\subsection{Transfer learning using VGG19 on color fundus images}
+In this subsection classic VGG19 architecture with two fully connected customized layers placed at the top of model along with imagenet weights is used on color fundus images. Batch size of 10 for 30 epochs is considered. Moreover, as number of images are small so data augmentation is performed to increase training and validation samples in order to reduce chances of over-fitting. The result given in table:~\ref{tab: Table-10} and figure:~\ref{fig: Image5} shows that VGG19 with imagenet weights perfomed considerably well on generalized dataset of fundus images. The classification report is given in table:~\ref{tab: Table-11}.
+\vspace{30pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-10}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.2166$ & $0.9187$ & $0.6566$ & $0.7500$\\
+\hline
+\end{tabular}
+\end{table}
+\vspace{20pt}
+
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Classification Report}
+\label{tab: Table-11}
+\begin{tabular}{c c c c c}
+\hline
+\textbf{} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\hline
+\textbf{Normal} & $0.60$ & $0.43$ & $0.50$ & $7$\\
+\textbf{DR1} & $0.85$ & $0.74$ & $0.79$ & $23$\\
+\textbf{DR2} & $0.67$ & $1.00$ & $0.80$ & $10$\\
+\textbf{Weighted avg} & $0.76$ & $0.75$ & $0.74$ & $40$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{vgg19_tl_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{vgg19_tl_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying transfer learning using VGG19 on augmented color fundus images}
+\label{fig: Image5}
+\end{figure}
+
+\subsection{Fine tuning using VGG16 on color fundus images}
+In this subsection classic VGG16 architecture after eliminating top 4 layers is considered. After this two fully connected customized layers placed at the top of model along with imagenet weights. Batch size of 10 for 30 epochs is considered. Moreover, data augmentation is performed as pre-processing step before feeding on VGG16 network. The result given in table:~\ref{tab: Table-12} and figure:~\ref{fig: Image6} shows that VGG16 with imagenet weights perfomed considerably well on generalized dataset of fundus images.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-12}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$3.2858e-05$ & $1.0000$ & $1.2077$ & $0.7250$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{vgg16_ft_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{vgg16_ft_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying fine tuning by removing top four layers of VGG16 on augmented color fundus images}
+\label{fig: Image6}
+\end{figure}
+
+
+\subsection{Fine tuning using VGG19 on color fundus images}
+In this subsection classic VGG19 architecture after eliminating top 4 layers is considered. After this two fully connected customized layers placed at the top of model along with imagenet weights. Batch size of 10 for 30 epochs is considered. Moreover, data augmentation is performed as pre-processing step before feeding on VGG16 network. The result given in table:~\ref{tab: Table-13} and figure:~\ref{fig: Image7} shows that VGG19 with imagenet weights perfomed considerably well on generalized dataset of fundus images.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-13}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.2444$ & $0.9687$ & $2.3069$ & $0.7750$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{vgg19_ft_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{vgg19_ft_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying fine tuning by removing top four layers of VGG19 on augmented color fundus images}
+\label{fig: Image7}
+\end{figure}
+
+\section{Cat-Dog}
+Deep learning models applied on Cat-Dog data repository is given in following subsections.
+
+\subsection{Fully connected deep net on cat-dog images}
+Architecture consist of $4$-deep layers, applied over colored images. The dataset is iterated for $10$ epochs segregated in batch size of $64$. Number of filters used are $32$ with kernel size of $3$x$3$ and pooling filters are of size $2$x$2$. It is observed by looking figure:~\ref{fig: Image8} and table:~\ref{tab: Table-14} that the model is showing positive response in terms of training and testing accuracy and by tuning hyper-parameters, better results could be achieved.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-14}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.6939$ & $0.5034$ & $0.6932$ & $0.5009$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{catdog_fc_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{catdog_fc_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying fully connected deep net on cat-dog images}
+\label{fig: Image8}
+\end{figure}
+
+\subsection{Conv-net on augmented cat-dog images}
+Architecture consist of $2$-conv-layers,$1$-maxpool layer and $2$-fully connected dense layers, applied over colored images. The dataset is iterated for $10$ epochs segregated in batch size of $64$. Number of filters used are $32$ with kernel size of $3$x$3$ and pooling filters are of size $2$x$2$. It is observed by looking figure:~\ref{fig: Image9} and table:~\ref{tab: Table-15} that the model is showing positive response in terms of training and testing accuracy and by tuning hyper-parameters, better results could be achieved.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-15}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.6730$ & $0.5828$ & $0.6584$ & $0.6126$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{catdog_da_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{catdog_da_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying augmented conv-net on cat-dog images}
+\label{fig: Image9}
+\end{figure}
+
+\section{MNIST}
+Deep learning models applied on MNIST data repository is given in following subsections.
+
+\subsection{Fully connected deep network on mnist repository}
+The architecture consist of $3$-dense layers operated with batch size of $128$ for $10$ epochs. It is observed by looking figure:~\ref{fig: Image10} and table:~\ref{tab: Table-16} that the model is showing positive response in terms of training and testing accuracy and by tuning hyper-parameters, better results could be achieved.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-16}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.6807$ & $0.8497$ & $0.6627$ & $0.8509$\\
+\hline
+\end{tabular}
+\end{table}
+\vspace{20pt}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{mnist_dfc_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{mnist_dfc_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying fully connected deep network on mnist dataset}
+\label{fig: Image10}
+\end{figure}
+
+\subsection{Conv-net on mnist images}
+Architecture consist of $2$-conv-layers,$1$-maxpool layer and $2$-fully connected dense layers, applied over colored images. The dataset is iterated for $10$ epochs segregated in batch size of $64$. Number of filters used are $32$ with kernel size of $3$x$3$ and pooling filters are of size $2$x$2$. It is observed by looking figure:~\ref{fig: Image11} and table:~\ref{tab: Table-17} that the model is showing positive response in terms of training and testing accuracy and by tuning hyper-parameters, better results could be achieved.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-17}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.2205$ & $0.9451$ & $0.1550$ & $0.9561$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{mnist_conv_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{mnist_conv_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying convolution network on mnist dataset}
+\label{fig: Image11}
+\end{figure}
+
+\subsection{Simple autoencoder on mnist images}
+Model consist of $2$ dense layers, one for encoding and other for decoding executed for $50$ epochs. Input shape taken is $784$ whereas, encoding dimension is $32$. Training and validation losses are mentioned in table:~\ref{tab: Table-18}. 
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing loss of simple autoencoder}
+\label{tab: Table-18}
+\begin{tabular}{c c}
+\hline
+\textbf{Training Loss} & \textbf{Testing Loss}\\
+\hline
+$0.1030$ & $0.1013$\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Sparse autoencoder on mnist images}
+Model consist of $2$ dense layers, one for encoding and other for decoding executed for $50$ epochs. Input shape taken is $784$ whereas, encoding dimension is $32$. Training and validation losses shown in table:~\ref{tab: Table-19} depicts that simple autoencoders performs better than sparse autoencoders on mnist dataset. 
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing loss of sparse autoencoder}
+\label{tab: Table-19}
+\begin{tabular}{c c}
+\hline
+\textbf{Training Loss} & \textbf{Testing Loss}\\
+\hline
+$0.2963$ & $0.2960$\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{deep autoencoder on mnist images}
+Model consist of $6$ dense layers in total, three are encoding layers and three are decoding, executed for $50$ epochs. Input shape taken is $784$ whereas, final encoding dimension is $32$. Training and validation losses shown in table:~\ref{tab: Table-20} depicts that deep autoencoders performs better than sparse autoencoders but shows poor performance compare to simple autoencoders on mnist dataset.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing loss of deep fully connected autoencoder}
+\label{tab: Table-20}
+\begin{tabular}{c c}
+\hline
+\textbf{Training Loss} & \textbf{Testing Loss}\\
+\hline
+$0.1109$ & $0.1124$\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Convolutional autoencoder on mnist images}
+Model consist of $7$-conv-layers,$3$-maxpooling layers and $3$-upsampling layers. Input shape taken is $784$. Training and validation losses shown in table:~\ref{tab: Table-21} depicts that deep autoencoders outperforms all other autoencoders on mnist dataset.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing loss of deep convolutional autoencoder}
+\label{tab: Table-21}
+\begin{tabular}{c c}
+\hline
+\textbf{Training Loss} & \textbf{Testing Loss}\\
+\hline
+$0.0980$ & $0.0962$\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Fashion MNIST}
+Deep learning strategies applied on Fashion-MNIST data repository is given below.
+
+\subsection{Denoising convolutional autoencoder on f-mnist dataset}
+The architecture consist of $7$-convolution layers, $3$-Maxpool layers and $3$-upsampling layers operated over fashion-mnist dataset. The performance of denoising convolutional autoencoder can be seen in table:~\ref{tab: Table-22}. 
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing loss of denoising convolutional autoencoder}
+\label{tab: Table-22}
+\begin{tabular}{c c}
+\hline
+\textbf{Training Loss} & \textbf{Testing Loss}\\
+\hline
+$0.3088$ & $0.3437$\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{IMDB}
+IMDB is sequential data repository publicly available for researcher. Fortunately  deep learning is rich in dealing with sequential data. The deep strategies applied over imdb dataset is given down below.
+
+\subsection{Simple RNN on imdb dataset}
+For executing simple rnn model, $5000$ top words with maximum review length of $500$ is considered. Sequence padding is performed as preprocessing step before feeding data in model. The model shows reasonable performance on underlined data set which is depicted in figure:~\ref{fig: Image12} and table:~\ref{tab: Table-23}.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-23}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.4865$ & $0.7653$ & $0.6700$ & $0.6100$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{imdb_simplernn_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{imdb_simplernn_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying simple rnn on imdb dataset}
+\label{fig: Image12}
+\end{figure}
+
+\subsection{LSTM on imdb repository}
+LSTM model is executed on imbd repository for $10$ epochs by considering $5000$ top words with maximum review length of $500$. Sequence padding is performed as preprocessing step before feeding data in model. The model shows reasonable performance on underlined data set which is depicted in figure:~\ref{fig: Image13} and table:~\ref{tab: Table-24}.
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-24}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.0648$ & $0.9807$ & $0.4254$ & $0.8633$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{imdb_lstm_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{imdb_lstm_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying LSTM on imdb dataset}
+\label{fig: Image13}
+\end{figure}
+
+\section{Cifar10}
+Deep learning model applied on cifar10 data repository is given below.
+
+\subsection{Conv-net on Cifar10}
+Cifar10 is executed on model with $2$-convolution layers,single Maxpool layer and $2$-fully connected dense layers.The model is executed for $10$ epochs with batch-size of $64$ operated on $32$ filter of kernel size $3$x$3$ and pool size of $2$x$2$. The model shows reasonable performance mentioned in table:~\ref{tab: Table-25} even for $10$ epochs and shown in figure:~\ref{fig: Image14}. 
+\vspace{20pt}
+\begin{table}[H]
+\rowcolors{1}{gray!35}{gray!15}
+\centering
+\caption{Training and Testing}
+\label{tab: Table-25}
+\begin{tabular}{c c c c}
+\hline
+\textbf{Training Loss} & \textbf{Training Accuracy} & \textbf{Testing Loss} & \textbf{Testing Accuracy}\\
+\hline
+$0.9235$ & $0.6712$ & $0.9545$ & $0.6637$\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{cifar_convnet_loss.png}
+\caption{Loss}
+\label{fig:a}
+\end{subfigure}
+\quad
+\begin{subfigure}[h]{0.45\linewidth}
+\includegraphics[width=\linewidth]{cifar_convnet_accuracy.png}
+\caption{Accuracy}
+\label{fig:b}
+\end{subfigure}
+\caption{Loss and Accuracy after applying conv-net on cifar10 dataset}
+\label{fig: Image14}
+\end{figure}
+
+\chapter{Conclusion and Future work}
+
+\section{Conclusion}
+Deep learning is widely used in medical imaging, specially after the advancement in imaging technology. One of the core area where researchers are showing interest is ophthalmology. Retinal images contain features which not only help in diagnosis of eye disease but also problem related to circulation and cardiovascular. Two common technologies are used for capturing retinal images, one is fundus photography and other is optical coherence tomography. This report covers state-of-art research conducted on Diabetic Retinopathy using fundus images and deep networks. Also, multiple deep learning networks are applied on six different data repositories and their performance is analyzed and measured.
+
+\section{Future work}
+The future work focuses on studying and executing various published deep neural architectures. Also, Image segmentation using deep neural networks would be the key area of interest.   
+
+\bibliographystyle{plainnat}
+\bibliography{mybib}
+\end{document}
